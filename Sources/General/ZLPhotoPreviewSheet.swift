@@ -309,7 +309,14 @@ public class ZLPhotoPreviewSheet: UIView {
         let config = ZLPhotoConfiguration.default()
         ZLPhotoManager.getCameraRollAlbum(allowSelectImage: config.allowSelectImage, allowSelectVideo: config.allowSelectVideo) { [weak self] (cameraRoll) in
             guard let `self` = self else { return }
-            var totalPhotos = ZLPhotoManager.fetchPhoto(in: cameraRoll.result, ascending: false, allowSelectImage: config.allowSelectImage, allowSelectVideo: config.allowSelectVideo, limitCount: config.maxPreviewCount)
+            var totalPhotos = ZLPhotoManager.fetchPhoto(in: cameraRoll.result,
+                                                        ascending: false,
+                                                        allowSelectImage: config.allowSelectImage,
+                                                        allowSelectGif: config.allowSelectGif,
+                                                        allowSelectLivePhoto: config.allowSelectLivePhoto,
+                                                        allowSelectBurst: config.allowSelectBurst,
+                                                        allowSelectVideo: config.allowSelectVideo,
+                                                        limitCount: config.maxPreviewCount)
             markSelected(source: &totalPhotos, selected: &self.arrSelectedModels)
             self.arrDataSources.append(contentsOf: totalPhotos)
             self.collectionView.reloadData()
@@ -537,8 +544,8 @@ public class ZLPhotoPreviewSheet: UIView {
                     assets[i] = asset ?? m.asset
                     zl_debugPrint("ZLPhotoBrowser: suc request \(i)")
                 } else {
-                    errorAssets.append(m.asset)
-                    errorIndexs.append(i)
+                    errorAssets[i] = m.asset
+                    errorIndexs[i] = i
                     zl_debugPrint("ZLPhotoBrowser: failed request \(i)")
                 }
                 
@@ -827,7 +834,13 @@ extension ZLPhotoPreviewSheet: UICollectionViewDataSource, UICollectionViewDeleg
                 hud.hide()
                 return
             }
-            var totalPhotos = ZLPhotoManager.fetchPhoto(in: cameraRoll.result, ascending: config.sortAscending, allowSelectImage: config.allowSelectImage, allowSelectVideo: config.allowSelectVideo)
+            var totalPhotos = ZLPhotoManager.fetchPhoto(in: cameraRoll.result,
+                                                        ascending: config.sortAscending,
+                                                        allowSelectImage: config.allowSelectImage,
+                                                        allowSelectGif: config.allowSelectGif,
+                                                        allowSelectLivePhoto: config.allowSelectLivePhoto,
+                                                        allowSelectBurst: config.allowSelectBurst,
+                                                        allowSelectVideo: config.allowSelectVideo)
             markSelected(source: &totalPhotos, selected: &self.arrSelectedModels)
             let defaultIndex = config.sortAscending ? totalPhotos.count - 1 : 0
             var index: Int?

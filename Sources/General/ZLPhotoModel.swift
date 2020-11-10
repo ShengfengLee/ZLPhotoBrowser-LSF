@@ -35,6 +35,7 @@ extension ZLPhotoModel {
         case gif
         case livePhoto
         case video
+        case burst //连拍照片
     }
     
 }
@@ -101,9 +102,14 @@ class ZLPhotoModel: NSObject {
                 return .gif
             }
             if #available(iOS 9.1, *) {
+                asset.mediaSubtypes
                 if asset.mediaSubtypes == .photoLive || asset.mediaSubtypes.rawValue == 10 {
                     return .livePhoto
                 }
+            }
+            
+            if asset.representsBurst {
+                return .burst
             }
             return .image
         default:

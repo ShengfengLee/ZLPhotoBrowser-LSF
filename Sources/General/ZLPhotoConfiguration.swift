@@ -73,6 +73,9 @@ public class ZLPhotoConfiguration: NSObject {
     /// If value is false, the Gif logo is not displayed.
     @objc public var allowSelectGif = true
     
+    ///是否允许选择连拍图片
+    @objc public var allowSelectBurst = true
+    
     /// Allow select LivePhoto, it only controls whether it is displayed in LivePhoto form.
     /// If value is false, the LivePhoto logo is not displayed.
     @objc public var allowSelectLivePhoto = false
@@ -105,6 +108,10 @@ public class ZLPhotoConfiguration: NSObject {
     
     /// Allow access to the preview large image interface (That is, whether to allow access to the large image interface after clicking the thumbnail image).
     @objc public var allowPreviewPhotos = true
+    
+    /// When iOS14 limited permission, whether to display more pictures.
+    /// (PHPhotoLibrary.shared().presentLimitedLibraryPicker(:) method).
+    @objc public var allowSelectMorePhotoWhenAuthIsLismited = true
     
     /// Whether to display the preview button (i.e. the preview button in the lower left corner of the thumbnail interface).
     @objc public var showPreviewButtonInAlbum = true
@@ -358,13 +365,6 @@ public class ZLPhotoConfiguration: NSObject {
     /// - Tips: If the choice is not allowed, the developer can toast prompt the user for relevant information.
     @objc public var canSelectAsset: ( (PHAsset) -> Bool )?
     
-    /// If user choose limited Photo mode, a button with '+' will be added to the ZLThumbnailViewController. It will call PHPhotoLibrary.shared().presentLimitedLibraryPicker(from:) to add photo.
-    /// E.g., Sina Weibo's ImagePicker
-    @objc public var showAddPhotoButton: Bool = true
-    
-    /// iOS14 limited Photo mode, will show collection footer view in ZLThumbnailViewController.
-    /// Will go to system setting if clicked.
-    @objc public var showEnterSettingFooter = true
 }
 
 

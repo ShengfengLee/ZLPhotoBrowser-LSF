@@ -64,7 +64,13 @@ class ZLAlbumListModel: NSObject {
     }
     
     func refetchPhotos() {
-        let models = ZLPhotoManager.fetchPhoto(in: self.result, ascending: ZLPhotoConfiguration.default().sortAscending, allowSelectImage: ZLPhotoConfiguration.default().allowSelectImage, allowSelectVideo:  ZLPhotoConfiguration.default().allowSelectVideo)
+        let models = ZLPhotoManager.fetchPhoto(in: self.result,
+                                               ascending: ZLPhotoConfiguration.default().sortAscending,
+                                               allowSelectImage: ZLPhotoConfiguration.default().allowSelectImage,
+                                               allowSelectGif: ZLPhotoConfiguration.default().allowSelectGif,
+                                               allowSelectLivePhoto: ZLPhotoConfiguration.default().allowSelectLivePhoto,
+                                               allowSelectBurst: ZLPhotoConfiguration.default().allowSelectBurst,
+                                               allowSelectVideo:  ZLPhotoConfiguration.default().allowSelectVideo)
         self.models.removeAll()
         self.models.append(contentsOf: models)
     }
