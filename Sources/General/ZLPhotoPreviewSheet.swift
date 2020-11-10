@@ -103,8 +103,12 @@ public class ZLPhotoPreviewSheet: UIView {
     @objc public init(selectedAssets: [PHAsset] = []) {
         super.init(frame: .zero)
         
-        if !ZLPhotoConfiguration.default().allowSelectImage &&
-            !ZLPhotoConfiguration.default().allowSelectVideo {
+        let config = ZLPhotoConfiguration.default()
+        if !config.allowSelectImage &&
+            !config.allowSelectGif &&
+            !config.allowSelectLivePhoto &&
+            !config.allowSelectBurst &&
+            !config.allowSelectVideo {
             assert(false, "ZLPhotoBrowser: error configuration")
             ZLPhotoConfiguration.default().allowSelectImage = true
         }

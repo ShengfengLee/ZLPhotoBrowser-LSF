@@ -142,6 +142,7 @@ public class ZLPhotoManager: NSObject {
             option.predicate = NSPredicate(format: "mediaType == %ld", PHAssetMediaType.image.rawValue)
         }
         
+        
         let smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .albumRegular, options: nil) as! PHFetchResult<PHCollection>
         let streamAlbums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumMyPhotoStream, options: nil) as! PHFetchResult<PHCollection>
         let userAlbums = PHCollectionList.fetchTopLevelUserCollections(with: nil)
@@ -358,6 +359,7 @@ public class ZLPhotoManager: NSObject {
         return false
     }
     
+    @discardableResult
     @objc public class func fetchAVAsset(forVideo asset: PHAsset, completion: @escaping ( (AVAsset?, [AnyHashable: Any]?) -> Void )) -> PHImageRequestID {
         let options = PHVideoRequestOptions()
         options.version = .original

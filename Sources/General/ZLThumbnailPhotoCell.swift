@@ -188,7 +188,14 @@ class ZLThumbnailPhotoCell: UICollectionViewCell {
             self.videoTag.isHidden = true
             self.livePhotoTag.isHidden = false
             self.descLabel.text = "Live"
-        } else {
+        } else if self.model.type == .burst {
+            self.bottomShadowView.isHidden = !ZLPhotoConfiguration.default().allowSelectBurst
+            self.videoTag.isHidden = true
+            self.livePhotoTag.isHidden = false
+            self.descLabel.text = "Burst"
+        }
+        
+        else {
             self.bottomShadowView.isHidden = true
         }
         
