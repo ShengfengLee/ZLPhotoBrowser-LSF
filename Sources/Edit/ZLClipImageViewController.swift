@@ -43,17 +43,17 @@ extension ZLClipImageViewController {
 }
 
 
-class ZLClipImageViewController: UIViewController {
+public class ZLClipImageViewController: UIViewController {
 
     static let bottomToolViewH: CGFloat = 90
     
     static let clipRatioItemSize: CGSize = CGSize(width: 60, height: 70)
     
     /// 用作进入裁剪界面首次动画frame
-    var presentAnimateFrame: CGRect?
+    public var presentAnimateFrame: CGRect?
     
     /// 用作进入裁剪界面首次动画和取消裁剪时动画的image
-    var presentAnimateImage: UIImage?
+    public var presentAnimateImage: UIImage?
     
     /// 取消裁剪时动画frame
     var cancelClipAnimateFrame: CGRect = .zero
@@ -135,15 +135,15 @@ class ZLClipImageViewController: UIViewController {
     var dismissAnimateImage: UIImage? = nil
     
     /// 传回旋转角度，图片编辑区域的rect
-    var clipDoneBlock: ( (CGFloat, CGRect, ZLImageClipRatio) -> Void )?
+    public var clipDoneBlock: ( (CGFloat, CGRect, ZLImageClipRatio) -> Void )?
     
-    var cancelClipBlock: ( () -> Void )?
+    public var cancelClipBlock: ( () -> Void )?
     
-    override var prefersStatusBarHidden: Bool {
+    public override var prefersStatusBarHidden: Bool {
         return true
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
     
@@ -152,7 +152,7 @@ class ZLClipImageViewController: UIViewController {
         self.cleanTimer()
     }
     
-    init(image: UIImage, editRect: CGRect?, angle: CGFloat = 0, selectRatio: ZLImageClipRatio?) {
+    public init(image: UIImage, editRect: CGRect?, angle: CGFloat = 0, selectRatio: ZLImageClipRatio?) {
         self.originalImage = image
         self.clipRatios = ZLPhotoConfiguration.default().editImageClipRatios
         self.editRect = editRect ?? .zero
@@ -183,14 +183,14 @@ class ZLClipImageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         self.setupUI()
         self.generateThumbnailImage()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.viewDidAppearCount += 1
@@ -228,7 +228,7 @@ class ZLClipImageViewController: UIViewController {
         }
     }
     
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         guard self.shouldLayout else {
@@ -903,7 +903,7 @@ class ZLClipImageViewController: UIViewController {
 
 extension ZLClipImageViewController: UIGestureRecognizerDelegate {
     
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == self.gridPanGes else {
             return true
         }
@@ -923,11 +923,11 @@ extension ZLClipImageViewController: UIGestureRecognizerDelegate {
 
 extension ZLClipImageViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.clipRatios.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLImageClipRatioCell.zl_identifier(), for: indexPath) as! ZLImageClipRatioCell
         
         let ratio = self.clipRatios[indexPath.row]
@@ -942,7 +942,7 @@ extension ZLClipImageViewController: UICollectionViewDataSource, UICollectionVie
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let ratio = self.clipRatios[indexPath.row]
         guard ratio != self.selectedRatio else {
             return
@@ -959,29 +959,29 @@ extension ZLClipImageViewController: UICollectionViewDataSource, UICollectionVie
 
 extension ZLClipImageViewController: UIScrollViewDelegate {
     
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.containerView
     }
     
-    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+    public func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         self.startEditing()
     }
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard scrollView == self.scrollView else {
             return
         }
         self.startEditing()
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard scrollView == self.scrollView else {
             return
         }
         self.startTimer()
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         guard scrollView == self.scrollView else {
             return
         }
@@ -995,7 +995,7 @@ extension ZLClipImageViewController: UIScrollViewDelegate {
 
 extension ZLClipImageViewController: UIViewControllerTransitioningDelegate {
     
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return ZLClipImageDismissAnimatedTransition()
     }
     

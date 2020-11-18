@@ -28,7 +28,7 @@ import UIKit
 
 /// https://github.com/kiritmodi2702/GIF-Swift
 // MARK: data 转 gif image
-extension UIImage {
+public extension UIImage {
     
     class func zl_animateGifImage(data: Data) -> UIImage? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
@@ -180,7 +180,7 @@ extension UIImage {
 }
 
 
-extension UIImage {
+public extension UIImage {
     
     // 修复转向
     func fixOrientation() -> UIImage {
@@ -364,6 +364,29 @@ extension UIImage {
         return temp
     }
     
+    //添加水印
+    func waterImage(_ image: UIImage, rect: CGRect)  -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
+        self.draw(in: CGRect(origin: .zero, size: self.size))
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    //根据指定size居中显示生成新的图片
+    func centerResize(_ size: CGSize) -> UIImage? {
+        let imageSize = self.size
+        let x = (size.width - imageSize.width) / 2.0
+        let y = (size.height - imageSize.height) / 2.0
+        let origin = CGPoint(x: x, y: y)
+        UIGraphicsBeginImageContextWithOptions(size, false, 1)
+        self.draw(in: CGRect(origin: origin, size: imageSize))
+        let temp = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return temp
+    }
+    
     func toCIImage() -> CIImage? {
         var ci = self.ciImage
         if ci == nil, let cg = self.cgImage {
@@ -372,21 +395,25 @@ extension UIImage {
         return ci
     }
     
-    func clipImage(_ angle: CGFloat, _ editRect: CGRect) -> UIImage? {
-        let a = ((Int(angle) % 360) - 360) % 360
+    func clipImage(_ angle: CGFloat?, _ editRect: CGRect?) -> UIImage? {
+        
         var newImage = self
-        if a == -90 {
-            newImage = self.rotate(orientation: .left)
-        } else if a == -180 {
-            newImage = self.rotate(orientation: .down)
-        } else if a == -270 {
-            newImage = self.rotate(orientation: .right)
+        if let angle = angle, angle != 0 {
+            let a = ((Int(angle) % 360) - 360) % 360
+            if a == -90 {
+                newImage = self.rotate(orientation: .left)
+            } else if a == -180 {
+                newImage = self.rotate(orientation: .down)
+            } else if a == -270 {
+                newImage = self.rotate(orientation: .right)
+            }
         }
-        guard editRect.size != newImage.size else {
+       
+        guard let rect = editRect, rect.size != newImage.size else {
             return newImage
         }
-        let origin = CGPoint(x: -editRect.minX, y: -editRect.minY)
-        UIGraphicsBeginImageContextWithOptions(editRect.size, false, newImage.scale)
+        let origin = CGPoint(x: -rect.minX, y: -rect.minY)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, newImage.scale)
         newImage.draw(at: origin)
         let temp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
